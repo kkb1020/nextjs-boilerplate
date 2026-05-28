@@ -18,6 +18,20 @@ model User {
 
   accounts Account[]
   sessions Session[]
+  posts    Post[]
+}
+
+model Post {
+  id        String   @id @default(cuid())
+  title     String
+  content   String
+  authorId  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  author User @relation(fields: [authorId], references: [id], onDelete: Cascade)
+
+  @@index([authorId, updatedAt(sort: Desc)])
 }
 
 model Account {
