@@ -1,27 +1,36 @@
 "use client"
 
-import { useState } from "react"
-import { signIn } from "next-auth/react"
+import { useEffect, useState } from "react"
+import { signIn, useSession } from "next-auth/react"
+import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 
 export default function LoginPage() {
+  const router = useRouter()
+  const { status } = useSession()
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    if (status === "authenticated") {
+      router.replace("/dashboard")
+    }
+  }, [status, router])
 
   async function handleGoogleLogin() {
     setLoading(true)
     setError(null)
 
     try {
-      await signIn("google", {
-        callbackUrl: "/dashboard",
-      })
+      await signIn("google", { callbackUrl: "/dashboard" })
     } catch {
       setError("Google 로그인에 실패했습니다. 다시 시도해 주세요.")
       setLoading(false)
     }
   }
+
+  if (status === "authenticated") return null
 
   return (
     <div className="flex min-h-screen items-center justify-center px-4">
