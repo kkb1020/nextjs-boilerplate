@@ -14,9 +14,14 @@ export default async function DashboardPage() {
   if (!userId) redirect("/login")
 
   const posts = await db.post.findMany({
-    where: { authorId: userId },
     orderBy: { updatedAt: "desc" },
-    select: { id: true, title: true, updatedAt: true },
+    select: {
+      id: true,
+      title: true,
+      updatedAt: true,
+      authorId: true,
+      author: { select: { name: true, email: true } },
+    },
     take: 50,
   })
 
@@ -39,7 +44,7 @@ export default async function DashboardPage() {
 
       <section className="rounded-xl border bg-background">
         <div className="border-b px-4 py-3">
-          <h2 className="text-sm font-semibold">내 글</h2>
+          <h2 className="text-sm font-semibold">전체 글</h2>
         </div>
 
         {posts.length === 0 ? (
@@ -52,30 +57,33 @@ export default async function DashboardPage() {
               <li key={post.id} className="flex items-center justify-between gap-3 px-4 py-3">
                 <div className="min-w-0">
                   <Link
-                    href={`/dashboard/${post.id}/edit`}
+                    href={`/dashboard/${post.id}`}
                     className="block truncate font-medium hover:underline"
                   >
                     {post.title}
                   </Link>
                   <div className="text-xs text-muted-foreground">
+                    {post.author.name ?? post.author.email} ·{" "}
                     {new Date(post.updatedAt).toLocaleString()}
                   </div>
                 </div>
-                <div className="flex shrink-0 gap-2">
-                  <Button
-                    render={<Link href={`/dashboard/${post.id}/edit`} />}
-                    variant="secondary"
-                    size="sm"
-                  >
-                    수정
-                  </Button>
-                  <form action={deletePost}>
-                    <input type="hidden" name="postId" value={post.id} />
-                    <Button type="submit" variant="destructive" size="sm">
-                      삭제
+                {post.authorId === userId ? (
+                  <div className="flex shrink-0 gap-2">
+                    <Button
+                      render={<Link href={`/dashboard/${post.id}/edit`} />}
+                      variant="secondary"
+                      size="sm"
+                    >
+                      수정
                     </Button>
-                  </form>
-                </div>
+                    <form action={deletePost}>
+                      <input type="hidden" name="postId" value={post.id} />
+                      <Button type="submit" variant="destructive" size="sm">
+                        삭제
+                      </Button>
+                    </form>
+                  </div>
+                ) : null}
               </li>
             ))}
           </ul>
