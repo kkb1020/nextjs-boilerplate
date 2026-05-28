@@ -1,0 +1,33 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(dir \"D:\\\\work\\\\0528_multi_agent\\\\nextjs-boilerplate\")",
+      "Bash(npx create-next-app@latest --help)",
+      "Bash(npx create-next-app@latest . --typescript --tailwind --eslint --app --no-src-dir --import-alias=\"@/*\" --no-git --yes)",
+      "Bash(npx create-next-app@latest temp-scaffold --typescript --tailwind --eslint --app --no-src-dir --import-alias=\"@/*\" --no-git --yes)",
+      "Bash(cp -r \"D:\\\\work\\\\0528_multi_agent\\\\temp-scaffold\\\\app\" \"D:\\\\work\\\\0528_multi_agent\\\\nextjs-boilerplate\\\\app\")",
+      "Bash(cp -r \"D:\\\\work\\\\0528_multi_agent\\\\temp-scaffold\\\\public\" \"D:\\\\work\\\\0528_multi_agent\\\\nextjs-boilerplate\\\\public\")",
+      "Bash(rm -rf \"D:\\\\work\\\\0528_multi_agent\\\\nextjs-boilerplate\\\\node_modules\")",
+      "Bash(npm install *)",
+      "Bash(taskkill /F /IM cp.exe)",
+      "Bash(taskkill /F /IM robocopy.exe)",
+      "Bash(cmd /c \"rmdir /s /q \\\\\"D:\\\\work\\\\0528_multi_agent\\\\nextjs-boilerplate\\\\node_modules\\\\\"\")",
+      "Bash(Set-Location \"D:\\\\work\\\\0528_multi_agent\\\\nextjs-boilerplate\")",
+      "Bash(npx prisma *)",
+      "Bash(npx shadcn@latest add input card label sonner)",
+      "PowerShell(New-Item *)",
+      "Bash(git add *)",
+      "Bash(git commit *)",
+      "Bash(Get-ChildItem -Path \"D:\\\\work\\\\0528_multi_agent\\\\nextjs-boilerplate\\\\app\" -Directory)",
+      "Bash(Select-Object Name)",
+      "PowerShell(Get-ChildItem -Path \"D:\\\\work\\\\0528_multi_agent\\\\nextjs-boilerplate\\\\app\\\\\\(auth\\)\" -Recurse | Select-Object FullName | ForEach-Object { $_.FullName -replace [regex]::Escape\\(\"D:\\\\work\\\\0528_multi_agent\\\\nextjs-boilerplate\"\\), \"\" })",
+      "PowerShell(Get-ChildItem -Path \"D:\\\\work\\\\0528_multi_agent\\\\nextjs-boilerplate\\\\app\\\\\\(dashboard\\)\" -Recurse | Select-Object FullName | ForEach-Object { $_.FullName -replace [regex]::Escape\\(\"D:\\\\work\\\\0528_multi_agent\\\\nextjs-boilerplate\"\\), \"\" })",
+      "Bash(npx tsc *)",
+      "Bash(node -e \"const b = require\\('@base-ui/react/button'\\); console.log\\(Object.keys\\(b\\)\\);\")",
+      "Bash(timeout 30 npx next dev)",
+      "Bash(git init *)",
+      "PowerShell(docker --version 2>$null; docker ps 2>$null | Select-Object -First 5)",
+      "PowerShell(Get-Command *)"
+    ]
+  }
+}
