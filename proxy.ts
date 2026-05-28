@@ -40,10 +40,26 @@ export default async function proxy(req: NextRequest) {
     return NextResponse.next()
   }
 
-  const token = await getToken({
-    req,
-    secret: process.env.AUTH_SECRET ?? process.env.NEXTAUTH_SECRET,
-  })
+  const secret = process.env.AUTH_SECRET ?? process.env.NEXTAUTH_SECRET
+  const tokenCookieNames = [
+    "__Secure-authjs.session-token",
+    "authjs.session-token",
+    "__Secure-next-auth.session-token",
+    "next-auth.session-token",
+  ] as const
+
+  let token = null as Awaited<ReturnType<typeof getToken>>
+  for (const cookieName of tokenCookieNames) {
+    // Auth.js v5 uses `authjs.*` cookie names; older NextAuth uses `next-auth.*`.
+    // Try both to avoid false negatives in middleware/proxy checks.
+    token =
+      (await getToken({
+        req,
+        secret,
+        cookieName,
+      })) ?? token
+    if (token) break
+  }
 
   if (!token) {
     return NextResponse.redirect(new URL("/login", req.url))
