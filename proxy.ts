@@ -22,6 +22,24 @@ export default async function proxy(req: NextRequest) {
     }
   }
 
+  // Public paths that must not trigger auth redirects, otherwise we create loops.
+  const pathname = req.nextUrl.pathname
+  if (
+    pathname.startsWith("/api/auth") ||
+    pathname.startsWith("/_next") ||
+    pathname === "/login" ||
+    pathname === "/register" ||
+    pathname === "/" ||
+    pathname === "/favicon.ico"
+  ) {
+    return NextResponse.next()
+  }
+
+  // Only protect dashboard routes for now.
+  if (!pathname.startsWith("/dashboard")) {
+    return NextResponse.next()
+  }
+
   const token = await getToken({
     req,
     secret: process.env.AUTH_SECRET ?? process.env.NEXTAUTH_SECRET,
